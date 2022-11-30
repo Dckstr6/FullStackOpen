@@ -1,4 +1,4 @@
-# fly.toml file generated for pranay-phonebook-fullstackopen on 2022-11-30T11:10:01-05:00
+# fly.toml file generated for pranay-phonebook-fullstackopen on 2022-11-30T11:42:03-05:00
 
 app = "pranay-phonebook-fullstackopen"
 kill_signal = "SIGINT"

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = '/api/persons'
+const baseURL = 'http://localhost:3002/api/persons'
 
 
 const getAll = () => {
@@ -21,4 +21,6 @@ const remove = (id) => {
     return axios.delete(`${baseURL}/${id}`);
 }
 
-export default {getAll,create,update,remove}
+let exp = {getAll,create,update,remove};
+
+export default exp;

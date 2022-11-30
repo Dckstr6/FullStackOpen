@@ -1,5 +1,4 @@
 import { useState, useEffect} from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 
 const App = () => {
@@ -15,12 +14,12 @@ const App = () => {
 
   const nameFormHandler = function(event){
     event.preventDefault();
-    let temp = persons.findIndex((x)=>x.name==newName);
-    if(temp!=-1){
+    let temp = persons.findIndex((x)=>x.name===newName);
+    if(temp!==-1){
         if(window.confirm(`${persons[temp].name} already exists. Modify Record?`)){
           const modContact = {name:newName,number:newNumber};
           personService.update(persons[temp].id,modContact).then(
-            (response)=>setPersons(persons.map(person=>person.name===newName?{...person,number:newNumber}:person))
+            (response)=>setPersons(persons.map(person=>person.name===response.name?{...person,number:response.number}:person))
           ).catch(
             ()=>{alert(`Error modifying ${newName}`);
             setMessage('Record not found, syncing records to most recent sync');
@@ -28,7 +27,6 @@ const App = () => {
             personService.getAll().then(
               (response)=>{setPersons(response.map(x=>x))}
             )});
-          
         }
     }
     else{
@@ -36,7 +34,7 @@ const App = () => {
       personService.create(new_contact).then((response)=>{
         setPersons(persons.concat(response));
         setMessage(`Added  ${newName}`);
-        setTimeout(()=>{setMessage(null)},5000);
+        setTimeout(()=>{setMessage(null)},3000);
       }).catch(()=>alert("Error adding new contact"))
     }
     setNewName('');

@@ -87,6 +87,27 @@ app.post('/api/persons',(request,response)=>{
     }
 })
 
+app.put('/api/persons/:id',(request,response)=>{
+    const body = request.body;
+    if(!body.name || !body.number){
+        return response.status(400).json({
+            error:'name and/or number missing'
+        })
+    }
+    const replId = persons.find(x=>x.name===body.name);
+    if(!replId){
+        return response.status(400).json({
+            error: 'person id not found'
+        })
+    }
+    else{
+        const modObj = {name:body.name,number:body.number,id:replId};
+        persons = persons.filter(x => x.id!==replId);
+        persons.concat(modObj);
+        response.json(modObj);
+    }
+})
+
 const generateId = () => {
     let maxId = persons.reduce((a,b)=>Math.max(a,b.id),-Infinity);
     return maxId + 1;
