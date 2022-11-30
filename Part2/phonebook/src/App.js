@@ -1,6 +1,6 @@
 import { useState, useEffect} from 'react'
 import axios from 'axios'
-import personService from './services/notes'
+import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -9,13 +9,9 @@ const App = () => {
   const [filterInput,setFilter] = useState('');
   const [message,setMessage] = useState(null);
 
-  const effect = () => {
-    axios.get('http://localhost:3001/persons').then(
-      (response) => {setPersons(persons.concat(response.data))}
-    )
-  }
-
-  useEffect(effect,[]);
+  useEffect(() => {
+    personService.getAll().then((response)=>{setPersons(persons.concat(response))})
+  },[]);
 
   const nameFormHandler = function(event){
     event.preventDefault();
@@ -29,8 +25,8 @@ const App = () => {
             ()=>{alert(`Error modifying ${newName}`);
             setMessage('Record not found, syncing records to most recent sync');
             setTimeout(()=>setMessage(null),3000);
-            axios.get('http://localhost:3001/persons').then(
-              (response)=>{setPersons(response.data.map(x=>x))}
+            personService.getAll().then(
+              (response)=>{setPersons(response.map(x=>x))}
             )});
           
         }
