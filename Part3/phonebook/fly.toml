@@ -1,6 +1,6 @@
-# fly.toml file generated for pranay-phonebook-fullstackopen on 2022-11-30T11:42:03-05:00
+# fly.toml file generated for pranay-fullstackopen-phonebook on 2022-12-01T10:53:58-05:00
 
-app = "pranay-phonebook-fullstackopen"
+app = "pranay-fullstackopen-phonebook"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []

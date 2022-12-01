@@ -8,14 +8,29 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3001/api/notes
+GET http://localhost:3002/api/persons
 
 ###
 
-PUT http://localhost:3002/api/persons/2
+POST http://localhost:3002/api/persons
 Content-Type: application/json
 
 {
     "name":"Ada Lovelace",
-    "number":"1234"
+    "number": "123445653465235"
 }
+
+###
+GET http://localhost:3002/api/persons/6388c41b4e9c4fd94eb22655
+
+###
+PUT http://localhost:3002/api/persons/6388c41b4e9c4fd94eb22655
+Content-Type: application/json
+
+{
+    "name":"Ada Lovelace",
+    "number": "12"
+}
+
+###
+DELETE http://localhost:3002/api/persons/6388c41b4e9c4fd94eb22655

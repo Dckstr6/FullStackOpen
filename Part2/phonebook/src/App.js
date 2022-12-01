@@ -6,7 +6,8 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber,setNewNumber]= useState('');
   const [filterInput,setFilter] = useState('');
-  const [message,setMessage] = useState(null);
+  const [successMessage,setSuccessMessage] = useState(null);
+  const [errorMessage,setErrorMessage] = useState(null);
 
   useEffect(() => {
     personService.getAll().then((response)=>{setPersons(persons.concat(response))})
@@ -21,9 +22,9 @@ const App = () => {
           personService.update(persons[temp].id,modContact).then(
             (response)=>setPersons(persons.map(person=>person.name===response.name?{...person,number:response.number}:person))
           ).catch(
-            ()=>{alert(`Error modifying ${newName}`);
-            setMessage('Record not found, syncing records to most recent sync');
-            setTimeout(()=>setMessage(null),3000);
+            (error)=>{
+            setErrorMessage(error.response.data.error);
+            setTimeout(()=>setErrorMessage(null),3000);
             personService.getAll().then(
               (response)=>{setPersons(response.map(x=>x))}
             )});
@@ -33,9 +34,12 @@ const App = () => {
       const new_contact = {name:newName,number:newNumber};
       personService.create(new_contact).then((response)=>{
         setPersons(persons.concat(response));
-        setMessage(`Added  ${newName}`);
-        setTimeout(()=>{setMessage(null)},3000);
-      }).catch(()=>alert("Error adding new contact"))
+        setSuccessMessage(`Added  ${newName}`);
+        setTimeout(()=>{setSuccessMessage(null)},3000);
+      }).catch((error)=>{
+        setErrorMessage(error.response.data.error);
+        setTimeout(()=>{setErrorMessage(null)},3000);
+      })
     }
     setNewName('');
     setNewNumber('');
@@ -63,7 +67,8 @@ const App = () => {
         </div>
       </form>
       <h2>Add a new Record</h2>
-      <Notification message={message} />
+      <SuccessNotification message={successMessage} />
+      <ErrorNotification message = {errorMessage}/>
       <form onSubmit={nameFormHandler}>
         <div>
           name: <input value={newName} onChange={handleNameChange}/>
@@ -90,13 +95,13 @@ const App = () => {
   )
 }
 
-const Notification = ({message}) => {
+const SuccessNotification = ({message}) => {
   if(message==null){
     return null;
   }
   const errorStyle = {
     color:'green',
-    background:'lighgrey',
+    background:'lightgrey',
     fontSize:20,
     borderStyle:'solid',
     borderRadius:5,
@@ -104,7 +109,25 @@ const Notification = ({message}) => {
     marginBottom:10
   }
   return (
-    <div className='error' style={errorStyle}>{message}</div>
+    <div style={errorStyle}>{message}</div>
+  )
+}
+
+const ErrorNotification = ({message}) => {
+  if(message==null){
+    return null;
+  }
+  const errorStyle = {
+    color:'red',
+    background:'lightgrey',
+    fontSize:20,
+    borderStyle:'solid',
+    borderRadius:5,
+    padding:10,
+    marginBottom:10
+  }
+  return (
+    <div style={errorStyle}>{message}</div>
   )
 }
 

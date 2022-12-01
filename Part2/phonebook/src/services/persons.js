@@ -9,12 +9,16 @@ const getAll = () => {
 
 const create = (newObj) => {
     const request = axios.post(baseURL,newObj);
-    return request.then((response)=>response.data);
+    return request.then((response)=>response.data).catch(
+        (error) => {throw(error);}
+    )
 }
 
 const update = (id,modObj) => {
     const request = axios.put(`${baseURL}/${id}`,modObj);
-    return request.then((response)=>response.data);
+    return request.then((response)=>response.data).catch(
+        (error) => {throw(error);}
+    )
 }
 
 const remove = (id) => {
