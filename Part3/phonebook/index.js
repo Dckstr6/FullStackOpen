@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const Person = require('./models/person');
+const logger = require('./utils/logger');
 
 // Middleware usage
 const app = express();
@@ -21,28 +22,6 @@ app.use(morgan((tokens,request,response)=>{
 // app.use(express.static('build'))
 app.use(cors());
 
-// persons = [
-//     { 
-//       "id": 1,
-//       "name": "Arto Hellas", 
-//       "number": "040-123456"
-//     },
-//     { 
-//       "id": 2,
-//       "name": "Ada Lovelace", 
-//       "number": "39-44-5323523"
-//     },
-//     { 
-//       "id": 3,
-//       "name": "Dan Abramov", 
-//       "number": "12-43-234345"
-//     },
-//     { 
-//       "id": 4,
-//       "name": "Mary Poppendieck", 
-//       "number": "39-23-6423122"
-//     }
-// ]
 
 // response from mongodb is javascript array, but response to front end has to be in json
 app.get('/api/persons',(request,response)=>{
@@ -131,10 +110,6 @@ app.put('/api/persons/:id',(request,response,next)=>{
     }
 })
 
-// const generateId = () => {
-//     let maxId = persons.reduce((a,b)=>Math.max(a,b.id),-Infinity);
-//     return maxId + 1;
-// }
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
     if (error.name === 'CastError') {
@@ -149,5 +124,5 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT,()=>{
-    console.log(`Express server started on port ${PORT}`);
+    logger.info(`Express server started on port ${PORT}`);
 })

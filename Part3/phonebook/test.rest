@@ -6,3 +6,6 @@ Content-Type: application/json
     "number":"12345"
 }
 
+###
+
+GET http://localhost:3002/api/persons/6387ad150f2c4520bb98832c
